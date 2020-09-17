@@ -50,7 +50,7 @@ class CityHashConan(ConanFile):
 
     def package(self):
         self.copy("FindTidy.cmake", dst=".", keep_path=False)
-        self.copy("*/tidys.pdb", dst="bin", keep_path=False)
+        self.copy("*/tidy-static.pdb", dst="bin", keep_path=False)
 
     def package_id(self):
         self.info.options.ninja = "any"

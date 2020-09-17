@@ -11,7 +11,7 @@ find_path(Tidy_INCLUDE_DIR
 
 # Find library
 find_library(Tidy_LIBRARY
-    NAMES tidys
+    NAMES tidys tidysd
     PATHS ${CONAN_LIB_DIRS_TIDY}
     NO_DEFAULT_PATH
 )
