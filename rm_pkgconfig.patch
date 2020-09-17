@@ -1,0 +1,23 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 631f0fd..dd932b3 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -619,18 +619,4 @@ endif ()
+ 
+ include(CPack)
+ 
+-#------------------------------------------------------------------------
+-# pkg-config
+-#------------------------------------------------------------------------
+-configure_file(
+-    "${CMAKE_CURRENT_SOURCE_DIR}/${LIB_NAME}.pc.cmake.in"
+-    "${CMAKE_CURRENT_BINARY_DIR}/${LIB_NAME}.pc"
+-    @ONLY
+-    )
+-    
+-install(FILES
+-    "${CMAKE_CURRENT_BINARY_DIR}/${LIB_NAME}.pc"
+-    DESTINATION "${LIB_INSTALL_DIR}/pkgconfig"
+-    )
+-
+ # eof
