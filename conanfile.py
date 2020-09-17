@@ -18,15 +18,21 @@ class CityHashConan(ConanFile):
         "arch": ["x86", "x86_64", "mips", "armv7"]
     }
     options = {
+        "fPIC": [True, False],
         "ninja": [True, False]
     }
     default_options = {
+        "fPIC": True,
         "ninja": True
     }
     generators = "cmake"
     exports_sources = "src/*", "CMakeLists.txt", "rm_pkgconfig.patch", "FindTidy.cmake"
     no_copy_source = True
     build_policy = "missing"
+
+    def configure(self):
+        if self.settings.os == "Windows":
+            del self.options.fPIC
 
     def build_requiments(self):
         if self.options.ninja:
