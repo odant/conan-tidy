@@ -7,7 +7,7 @@ from conans import ConanFile, CMake, tools
 
 class CityHashConan(ConanFile):
     name = "tidy"
-    version = "5.7.28+0"
+    version = "5.7.28+1"
     license = "https://raw.githubusercontent.com/htacg/tidy-html5/5.7.28/README/LICENSE.md"
     description = "libtidy is the library version of HTML Tidy. "
     url = "https://github.com/odant/conan-tidy"
