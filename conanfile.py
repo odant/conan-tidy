@@ -62,5 +62,10 @@ class CityHashConan(ConanFile):
         self.info.options.ninja = "any"
 
     def package_info(self):
+        # Libraries
         self.cpp_info.libs = tools.collect_libs(self)
+        # Defines
+        if self.settings.os == "Windows":
+            self.cpp_info.defines.append("TIDY_STATIC")
+
 
