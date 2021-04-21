@@ -7,7 +7,7 @@ from conans import ConanFile, CMake, tools
 
 class CityHashConan(ConanFile):
     name = "tidy"
-    version = "5.7.29+0"
+    version = "5.7.47+0"
     license = "https://raw.githubusercontent.com/htacg/tidy-html5/5.7.28/README/LICENSE.md"
     description = "libtidy is the library version of HTML Tidy. "
     url = "https://github.com/odant/conan-tidy"
@@ -26,7 +26,7 @@ class CityHashConan(ConanFile):
         "ninja": True
     }
     generators = "cmake"
-    exports_sources = "src/*", "CMakeLists.txt", "rm_pkgconfig.patch", "FindTidy.cmake"
+    exports_sources = "src/*", "CMakeLists.txt", "rm_pkgconfig.patch", "rm_install_pdb.patch", "FindTidy.cmake"
     no_copy_source = True
     build_policy = "missing"
 
@@ -36,10 +36,11 @@ class CityHashConan(ConanFile):
 
     def build_requiments(self):
         if self.options.ninja:
-            self.build_requires("ninja/1.9.0")
+            self.build_requires("ninja/[>=1.10.2]")
 
     def source(self):
         tools.patch(patch_file="rm_pkgconfig.patch")
+        tools.patch(patch_file="rm_install_pdb.patch")
 
     def build(self):
         build_type = "RelWithDebInfo" if self.settings.build_type == "Release" else "Debug"

@@ -19,7 +19,7 @@ find_library(Tidy_LIBRARY
 # Set version
 set(Tidy_VERSION_MAJOR 5)
 set(Tidy_VERSION_MINOR 7)
-set(Tidy_VERSION_PATCH 28)
+set(Tidy_VERSION_PATCH 47)
 set(Tidy_VERSION_STRING "${Tidy_VERSION_MAJOR}.${Tidy_VERSION_MINOR}.${Tidy_VERSION_PATCH}")
 set(Tidy_VERSION ${Tidy_VERSION_STRING})
 
