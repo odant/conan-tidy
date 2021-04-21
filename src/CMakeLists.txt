@@ -394,7 +394,11 @@ install(TARGETS ${name}
         LIBRARY DESTINATION ${LIB_INSTALL_DIR}
         )
 install( FILES ${HFILES} DESTINATION ${INCLUDE_INSTALL_DIR} )
-
+if(MSVC)
+    # install(FILES $<TARGET_PDB_FILE:${name}> DESTINATION lib OPTIONAL)
+    INSTALL(FILES ${PROJECT_BINARY_DIR}/${name}.dir/Debug/${name}.pdb
+    DESTINATION lib CONFIGURATIONS Debug )
+endif()
 
 #------------------------------------------------------------------------
 # Dynamic Library
@@ -412,9 +416,7 @@ if (BUILD_SHARED_LIB)
                                    VERSION   ${LIBTIDY_VERSION}
                                    SOVERSION ${TIDY_MAJOR_VERSION} )
     set_target_properties( ${name} PROPERTIES 
-                                   COMPILE_FLAGS "-DBUILD_SHARED_LIB" )
-    set_target_properties( ${name} PROPERTIES 
-                                   COMPILE_FLAGS "-DBUILDING_SHARED_LIB" )
+                                   COMPILE_FLAGS "-DBUILD_SHARED_LIB -DBUILDING_SHARED_LIB")
     install(TARGETS ${name}
         RUNTIME DESTINATION ${BIN_INSTALL_DIR}
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR}

@@ -947,12 +947,15 @@ static void AddByte( Lexer *lexer, tmbchar ch )
     {
         tmbstr buf = NULL;
         uint allocAmt = lexer->lexlength;
+        uint prev = allocAmt; /* Is. #761 */
         while ( lexer->lexsize + 2 >= allocAmt )
         {
             if ( allocAmt == 0 )
                 allocAmt = 8192;
             else
                 allocAmt *= 2;
+            if (allocAmt < prev) /* Is. #761 - watch for wrap - and */
+                TidyPanic(lexer->allocator, "\nPanic: out of internal memory!\nDocument input too big!\n");
         }
         buf = (tmbstr) TidyRealloc( lexer->allocator, lexer->lexbuf, allocAmt );
         if ( buf )
@@ -2698,10 +2701,9 @@ static Node* GetTokenFromStream( TidyDocImpl* doc, GetTokenMode mode )
                         }
 
                         /*
-                           We only print this message if there's a missing
-                           starting hyphen; this comment will be dropped.
+                           TY_(Report)(doc, NULL, NULL, MALFORMED_COMMENT_DROPPING );
+                           Warning now done later - see issue #487
                          */
-                        TY_(Report)(doc, NULL, NULL, MALFORMED_COMMENT_DROPPING );
                     }
                     else if (c == 'd' || c == 'D')
                     {
@@ -2774,6 +2776,11 @@ static Node* GetTokenFromStream( TidyDocImpl* doc, GetTokenMode mode )
                     }
 
 
+                    /*
+                       We only print this message if there's a missing
+                       starting hyphen; this comment will be dropped.
+                     */
+                    TY_(Report)(doc, NULL, NULL, MALFORMED_COMMENT_DROPPING ); /* Is. #487 */
 
                     /* else swallow characters up to and including next '>' */
                     while ((c = TY_(ReadChar)(doc->docIn)) != '>')
@@ -3267,6 +3274,22 @@ static Node* GetTokenFromStream( TidyDocImpl* doc, GetTokenMode mode )
 
                     if (!name)
                     {
+                        /* check if attributes are created by ASP markup */
+                        if (asp)
+                        {
+                            av = TY_(NewAttribute)(doc);
+                            av->asp = asp;
+                            AddAttrToList( &attributes, av ); 
+                        }
+
+                        /* check if attributes are created by PHP markup */
+                        if (php)
+                        {
+                            av = TY_(NewAttribute)(doc);
+                            av->php = php;
+                            AddAttrToList( &attributes, av ); 
+                        }
+                      
                         /* fix for http://tidy.sf.net/bug/788031 */
                         lexer->lexsize -= 1;
                         lexer->txtend = lexer->txtstart;
@@ -3321,7 +3344,11 @@ static Node* GetTokenFromStream( TidyDocImpl* doc, GetTokenMode mode )
                     }
                 }
 
-                if (c != ']')
+                if (c == '>')
+                {
+                    /* Is. #462 - reached '>' before ']' */
+                    TY_(UngetChar)(c, doc->docIn);
+                } else if (c != ']')
                     continue;
 
                 /* now look for '>' */
@@ -3444,6 +3471,10 @@ static Node* GetTokenFromStream( TidyDocImpl* doc, GetTokenMode mode )
         GTDBG(doc,"COMMENT", node);
         return node;  /* the COMMENT token */
     }
+
+    /* check attributes before return NULL */
+    if (attributes)
+        TY_(FreeAttribute)( doc, attributes );
 
     DEBUG_LOG(SPRTF("Returning NULL...\n"));
     return NULL;
