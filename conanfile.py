@@ -26,7 +26,7 @@ class ConanPackage(ConanFile):
         "ninja": True
     }
     generators = "cmake"
-    exports_sources = "src/*", "CMakeLists.txt", "rm_pkgconfig.patch", "FindTidy.cmake"
+    exports_sources = "src/*", "CMakeLists.txt", "rm_pkgconfig.patch", "rm_install_pdb.patch", "FindTidy.cmake"
     no_copy_source = True
     build_policy = "missing"
 
@@ -40,6 +40,7 @@ class ConanPackage(ConanFile):
 
     def source(self):
         tools.patch(patch_file="rm_pkgconfig.patch")
+        tools.patch(patch_file="rm_install_pdb.patch")
 
     def build(self):
         cmake = CMake(self, msbuild_verbosity='normal')
@@ -60,5 +61,10 @@ class ConanPackage(ConanFile):
         self.info.options.ninja = "any"
 
     def package_info(self):
+        # Libraries
         self.cpp_info.libs = tools.collect_libs(self)
+        # Defines
+        if self.settings.os == "Windows":
+            self.cpp_info.defines.append("TIDY_STATIC")
+
 
