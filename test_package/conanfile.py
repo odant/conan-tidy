@@ -8,7 +8,7 @@ from conans import ConanFile, CMake
 class PackageTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
-    requires = "ninja/1.9.0"
+    build_requires = "ninja/[>=1.9.0]"
 
     def imports(self):
         self.copy("*.pdb", dst="bin", src="bin")
@@ -16,7 +16,7 @@ class PackageTestConan(ConanFile):
         self.copy("*.so*", dst="bin", src="lib")
 
     def build(self):
-        cmake = CMake(self, generator="Ninja", msbuild_verbosity='normal')
+        cmake = CMake(self, msbuild_verbosity='normal')
         cmake.verbose = True
         cmake.configure()
         cmake.build()

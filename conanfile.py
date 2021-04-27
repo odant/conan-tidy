@@ -5,9 +5,9 @@
 from conans import ConanFile, CMake, tools
 
 
-class CityHashConan(ConanFile):
+class ConanPackage(ConanFile):
     name = "tidy"
-    version = "5.7.28+0"
+    version = "5.7.28+1"
     license = "https://raw.githubusercontent.com/htacg/tidy-html5/5.7.28/README/LICENSE.md"
     description = "libtidy is the library version of HTML Tidy. "
     url = "https://github.com/odant/conan-tidy"
@@ -34,17 +34,15 @@ class CityHashConan(ConanFile):
         if self.settings.os == "Windows":
             del self.options.fPIC
 
-    def build_requiments(self):
+    def build_requirements(self):
         if self.options.ninja:
-            self.build_requires("ninja/1.9.0")
+            self.build_requires("ninja/[>=1.9.0]")
 
     def source(self):
         tools.patch(patch_file="rm_pkgconfig.patch")
 
     def build(self):
-        build_type = "RelWithDebInfo" if self.settings.build_type == "Release" else "Debug"
-        gen = "Ninja" if self.options.ninja == True else None
-        cmake = CMake(self, build_type=build_type, generator=gen, msbuild_verbosity='normal')
+        cmake = CMake(self, msbuild_verbosity='normal')
         cmake.verbose = True
         cmake.definitions["BUILD_SHARED_LIB"] = "OFF"
         cmake.definitions["SUPPORT_CONSOLE_APP"] = "OFF"
