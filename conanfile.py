@@ -26,7 +26,7 @@ class CityHashConan(ConanFile):
         "ninja": True
     }
     generators = "cmake"
-    exports_sources = "src/*", "CMakeLists.txt", "rm_pkgconfig.patch", "rm_install_pdb.patch", "FindTidy.cmake"
+    exports_sources = "src/*", "CMakeLists.txt", "rm_pkgconfig.patch", "rm_install_pdb.patch", "msvc_vsnprintf_macro.patch", "FindTidy.cmake"
     no_copy_source = True
     build_policy = "missing"
 
@@ -41,6 +41,7 @@ class CityHashConan(ConanFile):
     def source(self):
         tools.patch(patch_file="rm_pkgconfig.patch")
         tools.patch(patch_file="rm_install_pdb.patch")
+        tools.patch(patch_file="msvc_vsnprintf_macro.patch")
 
     def build(self):
         build_type = "RelWithDebInfo" if self.settings.build_type == "Release" else "Debug"
