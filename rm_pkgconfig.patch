@@ -1,8 +1,8 @@
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -621,18 +621,4 @@ endif ()
- 
+@@ -686,18 +686,4 @@ endif ()
  include(CPack)
+ 
  
 -#------------------------------------------------------------------------
 -# pkg-config

@@ -1,6 +1,6 @@
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -394,11 +394,11 @@ install(TARGETS ${name}
+@@ -416,11 +416,11 @@ install(TARGETS ${name}
          LIBRARY DESTINATION ${LIB_INSTALL_DIR}
          )
  install( FILES ${HFILES} DESTINATION ${INCLUDE_INSTALL_DIR} )
