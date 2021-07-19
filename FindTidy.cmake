@@ -11,15 +11,15 @@ find_path(Tidy_INCLUDE_DIR
 
 # Find library
 find_library(Tidy_LIBRARY
-    NAMES tidys tidysd
+    NAMES tidy tidy_static tidy_staticd tidys tidysd
     PATHS ${CONAN_LIB_DIRS_TIDY}
     NO_DEFAULT_PATH
 )
 
 # Set version
 set(Tidy_VERSION_MAJOR 5)
-set(Tidy_VERSION_MINOR 7)
-set(Tidy_VERSION_PATCH 47)
+set(Tidy_VERSION_MINOR 8)
+set(Tidy_VERSION_PATCH 0)
 set(Tidy_VERSION_STRING "${Tidy_VERSION_MAJOR}.${Tidy_VERSION_MINOR}.${Tidy_VERSION_PATCH}")
 set(Tidy_VERSION ${Tidy_VERSION_STRING})
 
