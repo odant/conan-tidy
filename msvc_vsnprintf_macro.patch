@@ -1,7 +1,7 @@
 diff --git a/src/include/tidyplatform.h b/src/include/tidyplatform.h
 index 89b6a77..4b66f0f 100644
---- a/src/include/tidyplatform.h
-+++ b/src/include/tidyplatform.h
+--- a/include/tidyplatform.h
++++ b/include/tidyplatform.h
 @@ -485,7 +485,9 @@ extern "C" {
  #    define utimbuf _utimbuf /* Windows seems to want utimbuf */
  #    define stat _stat
